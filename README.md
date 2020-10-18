@@ -1,2 +1,2 @@
 # engineering4notebook
-stuff i made in engineering 4
+some stuff i made in engineering 4
