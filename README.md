@@ -11,3 +11,5 @@ in "calculator.py" i made a simple calculator functiton and gave an example of h
 in "quadSolve.py" i made a function that solves quadritic equations and gave a demonstration of how to use it
 
 in "stringsAndLoops.py" i made a thing that takes a sentence and breaks it into individual letters. i learned that strings function exactly like lists of characters when slices are involved.
+
+in "MSP.py" i made hangman
