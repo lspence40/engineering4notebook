@@ -69,7 +69,7 @@ while True: #repeat until don't
 	print(pinata(guesses)) #show progress
 	printList(status)
 	
-	if guesses == length:
+	if guesses == 7:
 		print('player 1 wins') #game over
 		break
 
