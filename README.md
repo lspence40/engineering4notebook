@@ -13,3 +13,10 @@ in "quadSolve.py" i made a function that solves quadritic equations and gave a d
 in "stringsAndLoops.py" i made a thing that takes a sentence and breaks it into individual letters. i learned that strings function exactly like lists of characters when slices are involved.
 
 in "MSP.py" i made hangman
+
+"VID_20210110_201735381.mp4" is a video of me demonstrating how i used an ssh to blink an LED. the steps were:
+-plug in pi with UART
+-hostname -I
+-unplug pi, connect it to a battery
+-open ssh app, address pi@TheNumbersFromStep2
+-events of video occur
