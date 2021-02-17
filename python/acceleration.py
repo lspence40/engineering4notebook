@@ -1,9 +1,12 @@
 import Adafruit_LSM303
 lsm303 = Adafruit_LSM303.LSM303()
 from time import sleep
+import RPi.GPIO as GPIO
 
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
+
+from math import sqrt
 
 from PIL import Image
 from PIL import ImageDraw
@@ -14,6 +17,10 @@ DC = 23
 SPI_PORT = 0
 SPI_DEVICE = 0
 
+GPIO.setmode(GPIO.BCM)
+pin = 12
+GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
 disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST, i2c_address=0x3d)
 
 disp.begin()
@@ -23,26 +30,34 @@ disp.display()
 width = disp.width
 height = disp.height
 
-padding = 2
-top = padding
-x = padding
+data = [32 for i in range(30)]
 
 font = ImageFont.load_default()
 
-while True:
-	accel, mag = lsm303.read()
-	accel_x, accel_y, accel_z = accel
-	print(accel_x, end="\t")
-	print(accel_y, end="\t")
-	print(accel_z)
-	sleep(.5)
-
+done = False
+while not done:
 	image = Image.new('1', (width, height))
 	draw = ImageDraw.Draw(image)
 
-	draw.text((x, top), str(accel_x), font=font, fill=255)
-	draw.text((x, top+20), str(accel_y), font=font, fill=255)
-	draw.text((x, top+40), str(accel_z), font=font, fill=255)
+	accel, mag = lsm303.read()
+	accel_x, accel_y, accel_z = accel
+	accel_total = sqrt(accel_x*accel_x + accel_y*accel_y + accel_z*accel_z)
+
+	temp = data[len(data)-1]
+	for i in range(len(data)-1, 0, -1):
+		data[i] = data[i-1]
+
+	data[0] = 38-((accel_total-981)//10)
+
+	for i in range(len(data)-1):
+		draw.line((i*10+20, data[i], (i*10)+30, data[i+1]), fill=255)
+	draw.text((5,27), str(int(data[0])-32), font=font, fill=255)
+
+	if GPIO.input(pin):
+		done = True
+		image = Image.new('1', (width, height))
 
 	disp.image(image)
 	disp.display()
+
+GPIO.cleanup()
