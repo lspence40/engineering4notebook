@@ -47,6 +47,7 @@ while not done:
 	for i in range(len(data)-1, 0, -1):
 		data[i] = data[i-1]
 
+	print(accel_total)
 	data[0] = 38-((accel_total-981)//10)
 
 	for i in range(len(data)-1):
